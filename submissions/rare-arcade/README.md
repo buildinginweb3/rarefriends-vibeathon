@@ -1,9 +1,9 @@
 # Rare Arcade
 
+![Rare Arcade arcade floor](hero.png)
+
 **Builder / contact:** Syrup / [@buildinginweb3](https://x.com/buildinginweb3) on X
 **Category:** Token Activity
-
-![Rare Arcade arcade floor](hero.png)
 
 ## One sentence
 
@@ -11,6 +11,12 @@ Rare Arcade turns NFTs and $RAREFRIENDS you already hold into creator-run prize
 machines where every pull spends $RAREFRIENDS, burns 5%, and uses live OpenSea
 data to price prizes transparently—giving otherwise idle holdings active utility
 and creators a way to earn from the machines they build.
+
+**Demo note:** RF spending, the 5% burn, creator receipts and prize settlement
+are simulated; wallet ownership and OpenSea market data are live/read-only.
+
+**[PLAY RARE ARCADE](https://buildinginweb3.github.io/rare-arcade/)**
+· **[SOURCE CODE](https://github.com/buildinginweb3/rare-arcade)**
 
 ## What did you build?
 
@@ -80,7 +86,9 @@ The demo economy starts a player at **250,000 RF** and an operator at
 
 Both publish exact odds, configured RTP, current RTP, and the full prize
 inventory **before** a player pulls. Every creator machine publishes its own
-economics; there is no house edge and no hidden weighting.
+economics; any modeled creator margin is implied by the published RTP and 5%
+burn, with no hidden weighting. Seeded demo machines run at 80–90% RTP, so a
+creator margin is expected there.
 
 ## Source code
 
@@ -160,7 +168,7 @@ Creators never hand-guess "this NFT is worth 20,000 RF". Rare Arcade derives an 
 reference from real market data:
 
 ```
-collection top-bid USD  ÷  current $RAREFRIENDS USD  =  RF floor reference
+collection top-bid USD  ÷  current $RAREFRIENDS USD  =  RF market reference
 ```
 
 This is live and working, not a stub. One detail that matters: **OpenSea's offer
@@ -180,8 +188,10 @@ consideration quantity first. Without that, top-bid valuation is badly inflated.
 - **Locked snapshots** — valuation is snapshotted immediately before publish, so
   later market moves cannot mutate a published machine's RTP or EV.
 
-Floor references are **market references used by Rare Arcade's economics model,
-not guaranteed sale values** for individual NFTs.
+The valuation basis is the **highest active offer (top bid)**, not a floor price.
+The resulting market reference is a **reference used by Rare Arcade's economics
+model, not a guaranteed sale value** for an individual NFT, and not the amount a
+creator can expect to realise.
 
 ## Real vs simulated
 
