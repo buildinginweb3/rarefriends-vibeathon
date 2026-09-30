@@ -29,7 +29,7 @@ Demo Mode needs **no wallet**, **no Rare Friend** and **no RF**. Press **Try Dem
 
 ## SUBMITTED SOURCE COMMIT
 
-**[`ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc`](https://github.com/buildinginweb3/rare-advance/tree/ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc)**
+**[`ab36ca10455d0860afca247a28c7e1b7d4a2b9b9`](https://github.com/buildinginweb3/rare-advance/tree/ab36ca10455d0860afca247a28c7e1b7d4a2b9b9)**
 
 This is the exact commit behind the public demo linked above.
 
@@ -320,6 +320,33 @@ recycling is the point: RF is not destroyed once, it is intermediated.
 
 See [WETH participation](#weth-participation). WETH is separate accounting, temporary, and never becomes RF.
 
+### Claimable vs still streaming
+
+Rare Friends can hold two different kinds of RF at once, and Rare Advance treats
+them very differently.
+
+**Claimable now** is RF the Friend owner can already take. Where Rare Friends
+exposes it, this is read directly from supported onchain protocol state
+(`LIVE · ONCHAIN`).
+
+**Still streaming** is the amount that is still arriving over the current reward
+stream. Rare Friends does not expose a direct per-Friend pending getter, so
+Rare Advance **derives** this from live protocol state:
+
+```
+friend share    = friend reward weight / total active reward weight
+still streaming = friend share x remaining funded RF stream
+```
+
+That derivation is labelled **MODELED**, not live. It never overstates the
+slice: division rounds down.
+
+**Rare Advance advances against the eligible still-streaming amount**, not
+against RF that is already claimable. Choosing MAX in the app takes the whole
+still-streaming receivable and nothing more.
+
+---
+
 ## Real vs simulated
 
 ### Live / read-only
@@ -333,12 +360,12 @@ See [WETH participation](#weth-participation). WETH is separate accounting, temp
 - claimable / earned reward data
 - aggregate protocol state and total active weight
 
-### Modeled
+### Modeled from live protocol state
 
-- per-Friend streaming allocation where it is not directly exposed by the protocol
-- future reward rate
+- the selected Friend's still-streaming RF, derived from live stream state and its reward weight
+- future reward estimates
 - payback duration
-- growth financing outcomes
+- Growth financing repayment estimates
 
 ### Simulated
 
@@ -371,28 +398,41 @@ See [WETH participation](#weth-participation). WETH is separate accounting, temp
 
 ## Future support / integration
 
-The Vibeathon build intentionally keeps Rare Advance's financial layer **simulated**. Rare Friends ownership and
-supported protocol data are read-only.
+The Vibeathon build already reads supported Rare Friends state onchain and models
+the Rare Advance market end to end: reward advances, communal liquidity pools,
+borrower-selected terms, manual repayment and Growth financing. Public and
+private pools, communal LP contributions, position-specific allocation and
+temporary WETH participation all work in the model today.
 
-A production implementation would require audited, protocol-supported infrastructure for:
+`Claimable now` is read directly from the protocol where supported.
+`Still streaming` — the amount Rare Advance advances against — is currently
+derived from live Rare Friends reward-stream state and the selected Friend's
+reward weight, because no direct per-Friend pending getter is available.
 
-- real RF liquidity deposits and withdrawals;
-- audited public/private liquidity pool contracts;
-- pool-share and position-level LP accounting;
-- assignment / routing / escrow of financed RF reward streams;
-- WETH reward routing;
-- settlement enforcement;
-- manual onchain repayment;
-- financing of live activation, hardwiring, reactivation, promotion and upgrades;
-- handling NFT transfers while financing is outstanding;
-- access control for private pools;
-- production underwriting and risk controls;
-- protection against changing reward rates and changing active network weight;
-- secure contract accounting and audits.
+**The production requirement is a reliable, auditable way to know exactly how much
+RF remains attributable to each financed Friend.** A direct Rare Friends getter
+would make that simpler and more robust; a deterministic, verifiable derivation
+from protocol state may be sufficient, so a brand-new API is not assumed to be a
+prerequisite.
 
-When financing settles, production routing would need to return the full future reward stream to the Friend.
+Taking Rare Advance from simulation to production mainly needs an audited
+settlement layer for:
 
-**None of this is live.**
+- real RF deposits and withdrawals in liquidity pools;
+- routing or escrowing the financed portion of RF rewards while a position is
+  active;
+- routing any agreed temporary WETH share for Growth financing;
+- accepting real RF manual repayments and releasing reward routing once the
+  position settles;
+- executing financed Rare Friends activation, hardwiring, reactivation,
+  promotion or upgrade actions after user approval.
+
+A production implementation would also need a defined rule for an NFT transfer
+while financing is still active.
+
+The existing Rare Friends contracts remain responsible for reward generation,
+reward weight and growth mechanics; Rare Advance adds the financing and
+settlement layer around them.
 
 ## Stack
 
@@ -413,7 +453,7 @@ Friends protocol-data integration. This is valid under the Vibeathon rules for n
 ```sh
 git clone https://github.com/buildinginweb3/rare-advance.git
 cd rare-advance
-git checkout ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc
+git checkout ab36ca10455d0860afca247a28c7e1b7d4a2b9b9
 npm ci
 npm run dev
 ```
@@ -436,14 +476,14 @@ Useful scripts: `npm run dev`, `npm run build`, `npm run typecheck`, `npm test`,
 
 ## Checks
 
-All run against commit `ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc`.
+All run against commit `ab36ca10455d0860afca247a28c7e1b7d4a2b9b9`.
 
 | Check | Result |
 | --- | --- |
 | Typecheck | PASS |
 | Unit tests | 266 / 266 PASS |
-| Wallet regression tests | 9 / 9 PASS |
-| E2E (offline, against the production build) | 60 / 60 PASS |
+| Wallet regression tests | 11 / 11 PASS |
+| E2E (offline, against the production build) | 62 / 62 PASS |
 | Production build | PASS |
 | Accessibility / contrast / reduced motion | PASS |
 | Desktop visual QA | PASS |
@@ -454,7 +494,7 @@ All run against commit `ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc`.
 | Judge-flow walkthrough (live URL, 14 flows × 4 viewports) | 56 / 56 PASS |
 
 Validated source commit:
-[`ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc`](https://github.com/buildinginweb3/rare-advance/tree/ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc)
+[`ab36ca10455d0860afca247a28c7e1b7d4a2b9b9`](https://github.com/buildinginweb3/rare-advance/tree/ab36ca10455d0860afca247a28c7e1b7d4a2b9b9)
 
 ## Known limitations
 
