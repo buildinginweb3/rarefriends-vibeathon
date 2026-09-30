@@ -1,0 +1,491 @@
+# Rare Advance
+
+**Builder / contact:** Syrup / [@buildinginweb3](https://x.com/buildinginweb3)
+
+**Category:** Economy Potential
+
+**FriendSDK:** No
+
+Rare Advance is a financial/economy web tool using its own web interface and read-only Rare Friends protocol
+integration rather than the FriendSDK game runtime.
+
+## One sentence
+
+**Rare Advance turns an earning Rare Friend's streaming $RAREFRIENDS rewards into liquidity today, while creating a
+community-funded capital market that can also model financing for activation, hardwiring, reactivation,
+promotions and upgrades from the future rewards they create.**
+
+---
+
+## ▶ PLAY RARE ADVANCE
+
+**https://buildinginweb3.github.io/rare-advance/**
+
+Demo Mode needs **no wallet**, **no Rare Friend** and **no RF**. Press **Try Demo**.
+
+## SOURCE CODE
+
+**https://github.com/buildinginweb3/rare-advance**
+
+## SUBMITTED SOURCE COMMIT
+
+**[`1505eff7e0907b943541343d60b45930f78eee6f`](https://github.com/buildinginweb3/rare-advance/tree/1505eff7e0907b943541343d60b45930f78eee6f)**
+
+This is the exact commit behind the public demo linked above.
+
+---
+
+![Rare Advance](hero.png)
+
+<sub>The real deployed app. The portrait is the genuine onchain `tokenURI()` artwork of Rare Friends Genesis #500,
+read from the collection contract. Reward figures are labelled SIMULATED.</sub>
+
+---
+
+## What it is
+
+Rare Friends can receive `$RAREFRIENDS` and WETH rewards over time.
+
+Rare Advance explores a market where holders can turn eligible streaming RF rewards into liquidity before the
+stream finishes.
+
+Instead of Rare Advance setting one universal price, **liquidity providers create pools with their own terms**.
+Other users can contribute RF to compatible public pools, and Rare Friend holders choose which available pool
+they want to use.
+
+The same market can model financing for existing Rare Friends growth actions, including activation, hardwiring,
+reactivation, promotion and tier upgrades.
+
+No DeFi experience is needed to try it. Everything runs in a browser, against a simulated market, in Demo Mode.
+
+## Why Economy Potential
+
+Rare Friends already has a functioning reward economy. Rare Friends already consume RF: activating,
+hardwiring, reactivating, promoting and upgrading a Friend all cost RF and all change its **reward weight**,
+which determines its share of a **seven-day** reward stream of **RF and WETH**.
+
+Rare Advance adds the missing half of that economy: a **market for RF liquidity**.
+
+| Rare Friends already has | Rare Advance adds |
+| --- | --- |
+| RF-consuming protocol actions | A market for RF liquidity |
+| Reward weight | Community-created liquidity pools |
+| RF rewards | Communal pool participation |
+| WETH rewards | Competing financing terms |
+| Seven-day reward streaming | Recycling of returned RF capital |
+| Activation, hardwiring, reactivation | Reward advances |
+| Promotion, tier upgrades | Modeled growth financing |
+| | Optional temporary WETH participation |
+
+This is why it belongs in **Economy Potential** rather than merely **Token Activity**: Rare Advance does not
+just spend RF, it creates a secondary market *around* RF and gives RF a velocity it does not currently have.
+
+**The advance flywheel**
+
+```
+RF HOLDERS
+  → PROVIDE LIQUIDITY
+  → POOLS COMPETE ON TERMS
+  → RARE FRIEND HOLDERS CHOOSE CAPITAL
+  → ADVANCE / GROWTH FINANCING
+  → SETTLEMENT
+  → CAPITAL RETURNS TO LPs
+  → CAPITAL CAN FUND THE NEXT POSITION
+```
+
+**The growth flywheel**
+
+```
+RF LIQUIDITY
+  → RARE FRIENDS GROWTH ACTION
+  → EXISTING PROTOCOL RF ECONOMICS
+  → MORE REWARD WEIGHT
+  → MORE FUTURE REWARDS
+  → MODELED FINANCING REPAYMENT
+```
+
+More reward weight means a larger share of the same reward pool, which makes the pool easier to service and
+makes future financing more attractive. Rare Friends does not guarantee any token value, and neither does this
+project.
+
+## How it works
+
+### Reward advances
+
+An eligible streaming RF reward can be advanced. The user chooses the **amount**, an **eligible liquidity
+pool**, and therefore the **terms**.
+
+Worked example on the demo default terms:
+
+| Line | Amount |
+| --- | --- |
+| Eligible streaming RF | 1,000 RF |
+| Received now | **950 RF** |
+| Maximum LP premium | 40 RF (4%) |
+| Rare Advance fee / burn | 10 RF (1%) |
+| Settlement target | 1,000 RF out of the Friend's stream |
+
+**These are SIMULATED MARKET TERMS.** No RF is moved, burned or transferred. The "fee" is a modelled bucket
+that funds Rare Advance's own simulated burns; it is never shared with lenders.
+
+It is a **sale of an already-streaming receivable at a discount**, not a loan:
+
+- nothing compounds, and no interest accrues after you accept;
+- premium is capped at the quoted maximum and only vests with elapsed time;
+- you can end the arrangement at any time and only pay the premium earned so far.
+
+### Liquidity pools
+
+Anyone in the simulated market can create a liquidity pool. The creator sets:
+
+- **public or private**;
+- **eligible financing type** (reward advances, growth financing, or both);
+- **LP premium**;
+- **maximum financing size**;
+- **maximum share of an action that may be financed** (which also sets the minimum owner contribution);
+- **RF routing terms**;
+- **optional WETH participation** for Growth;
+- **eligible growth actions and generations**;
+- **pool capital**.
+
+**Public pools** are discoverable, other users may contribute RF, and compatible borrowers may choose them.
+
+**Private pools** are visible only to someone with access. They can be creator-only, or open to invited
+liquidity providers and borrowers via an invite code or allowlist.
+
+Other contributors join on the pool's **existing** terms.
+
+### Communal pool accounting
+
+Pool capital can come from **multiple liquidity providers**.
+
+When a financing position opens, Rare Advance **snapshots which LP capital funded that position**. The RF
+principal repayment, the RF LP premium, and any modeled WETH participation are then allocated according to
+**that position-specific funding snapshot**.
+
+An LP who joins *after* a position opened is absent from its snapshot and can never receive economics from a
+position they did not fund.
+
+### Pool terms lock
+
+Pool economic terms **lock** when either:
+
+- another LP participates in the pool, or
+- a financing position opens.
+
+This prevents a creator from changing terms after participants have committed capital. If different terms are
+wanted, **clone the pool with new terms**.
+
+### Borrower choice
+
+Rare Advance does **not** force one financing price. A holder compares compatible pools:
+
+For **reward advances**: RF received now, maximum total cost, and pool liquidity.
+
+For **Growth financing**: RF financed, RF required upfront, RF premium, RF reward routing, and WETH share.
+
+Badges are strictly factual. **Rare Advance never names a single best pool**, because the terms are genuinely
+two-sided: a pool with a lower premium may have less liquidity, and a pool offering a WETH share is paying for
+it by taking a cut of your WETH.
+
+### Growth financing
+
+Grow **models** financing for valid Rare Friends protocol actions. Depending on the Friend's state:
+
+- **Genesis**: activation
+- **Generations**: hardwire, reactivate, promote, upgrade
+
+The pool supplies simulated RF. The holder may supply an owner contribution. The growth action changes reward
+weight according to Rare Friends protocol rules. A configurable portion of modeled future RF rewards can repay
+the financing.
+
+**All of this financing is SIMULATED. No real protocol action executes.**
+
+### WETH participation
+
+Rare Friends rewards are **RF and WETH**, not raw ETH.
+
+Growth pools may optionally request a **temporary** percentage of the Friend's **modeled** WETH rewards while
+financing remains outstanding. For example, at a 10% WETH share:
+
+| Stage | Modeled WETH split |
+| --- | --- |
+| During financing | 90% to the Friend owner, 10% to the financing pool |
+| After financing settles | **100% to the Friend owner** |
+
+WETH participation **does not continue permanently**; it stops the instant the RF repayment target is met.
+WETH is accounted **separately** from RF and is never silently converted into RF.
+
+### Repayment
+
+A financing position can settle through modeled reward routing, manual simulated RF repayment, or a
+combination of both. Users can repay **partially** or **pay off fully**.
+
+Once financing settles:
+
+- RF routing ends;
+- WETH participation ends;
+- the Friend receives 100% of modeled future rewards.
+
+Paying off early only ever charges the premium earned so far.
+
+## How to try it
+
+### Demo mode
+
+Demo Mode is the easiest path and needs no wallet.
+
+1. Open [the demo](https://buildinginweb3.github.io/rare-advance/) and press **Try Demo**.
+2. Use the preselected Rare Friend, or press **Change Friend** to pick another.
+3. Press **Get this stream early**.
+4. Choose how much streaming RF to advance (presets or a specific amount).
+5. Compare the available liquidity pools.
+6. Pick an offer and **Confirm**.
+7. Press **Simulate time** to watch the stream settle.
+8. Repay partially or **Pay off** fully.
+9. Open **Grow**, choose a valid Rare Friends action, compare eligible Growth pools, and inspect the RF and
+   WETH terms.
+10. Open **Liquidity** to create your own pool or contribute RF to a compatible public pool.
+
+### Real wallet mode
+
+- A browser wallet is required (MetaMask, Rabby or any EIP-1193 wallet).
+- **Robinhood Chain mainnet**, chain **4663**, is required for live reads.
+- Interaction is **read-only**. The only wallet methods this app can issue are `eth_requestAccounts`,
+  `eth_accounts`, `eth_chainId`, `wallet_switchEthereumChain` and `wallet_addEthereumChain`.
+- **Rare Friends Genesis** and **Rare Friends Generations** are both supported.
+
+This build does **NOT** request: RF approval, NFT approval, token transfer, NFT transfer, live liquidity
+deposit, live activation, live upgrade, or any real financing transaction.
+
+## Rare Friends integration
+
+**Direct Robinhood Chain reads** (authoritative, read-only):
+
+- `ownerOf` for ownership verification
+- NFT artwork via each collection contract's own `tokenURI()`
+- activation and reward position state
+- generation and tier
+- token-bound account
+- earned / claimable reward data
+- `totalWeight` and aggregate protocol state
+
+**First-party Rare Friends endpoints**, where used:
+
+- `/api/protocol/owned-nfts` — NFT discovery for a connected wallet
+- `/api/protocol/snapshot` — optional public protocol snapshot
+
+The first-party API sends no CORS headers, so in development and preview the app reaches it through its own
+same-origin read-only proxy paths (`/api/rf-owned-nfts`, `/api/rf-snapshot`). Those proxies are plain
+JSON/JSON-RPC pass-throughs.
+
+**OpenSea API v2** is used only as a **secondary** source for NFT traits and canonical marketplace URLs, and as
+a fallback image. OpenSea ownership is never trusted for economics: ownership is always re-verified with a
+direct onchain `ownerOf()` read.
+
+## $RAREFRIENDS economy
+
+RF is what Rare Friends actions consume and what rewards are paid in. Rare Advance does two things with it:
+
+1. **Advances** a Friend's streaming RF rewards for cash-equivalent RF today, at a discount, with the remainder
+   settling out of the stream over its term.
+2. **Finances growth**, so a Friend's activation, hardwiring, reactivation, promotion or upgrade can be paid
+   for from the future rewards that the added reward weight creates.
+
+RF that settles back to a pool returns to its lenders and becomes available to fund the next position. That
+recycling is the point: RF is not destroyed once, it is intermediated.
+
+## Public and private pools
+
+| | Public pool | Private pool |
+| --- | --- | --- |
+| Discoverable | Yes | Only to someone with access |
+| Other users may contribute RF | Yes | Per the pool's access rule |
+| Compatible borrowers may choose it | Yes | Per the pool's access rule |
+| Access modes | — | Creator-only, or invited LPs / borrowers via code or allowlist |
+
+## WETH participation
+
+See [WETH participation](#weth-participation). WETH is separate accounting, temporary, and never becomes RF.
+
+## Real vs simulated
+
+### Live / read-only
+
+- wallet address
+- Rare Friends ownership
+- onchain NFT artwork (`tokenURI()`)
+- generation and tier
+- activation status
+- reward weight
+- claimable / earned reward data
+- aggregate protocol state and total active weight
+
+### Modeled
+
+- per-Friend streaming allocation where it is not directly exposed by the protocol
+- future reward rate
+- payback duration
+- growth financing outcomes
+
+### Simulated
+
+- RF liquidity deposits and withdrawals
+- pool creation
+- public / private pool participation
+- reward advances
+- LP premiums
+- Rare Advance fee / burn
+- financing settlement
+- manual repayments
+- growth financing
+- WETH routing
+- actual protocol growth execution
+
+**No real RF, WETH or NFTs move in the Vibeathon build.**
+
+## Data sources
+
+| Source | Role |
+| --- | --- |
+| **Onchain (Robinhood Chain)** | Authoritative for supported protocol state and ownership |
+| **Rare Friends first-party API** | Supplementary, where used |
+| **OpenSea API v2** | Secondary NFT trait and marketplace metadata, and a fallback image |
+| **Modeled** | Forward-looking calculations |
+| **Simulated** | All Rare Advance financial activity |
+
+**Onchain state wins if an indexer disagrees.** An OpenSea or first-party index that disagrees with a direct
+`ownerOf()` read is treated as wrong.
+
+## Future support / integration
+
+The Vibeathon build intentionally keeps Rare Advance's financial layer **simulated**. Rare Friends ownership and
+supported protocol data are read-only.
+
+A production implementation would require audited, protocol-supported infrastructure for:
+
+- real RF liquidity deposits and withdrawals;
+- audited public/private liquidity pool contracts;
+- pool-share and position-level LP accounting;
+- assignment / routing / escrow of financed RF reward streams;
+- WETH reward routing;
+- settlement enforcement;
+- manual onchain repayment;
+- financing of live activation, hardwiring, reactivation, promotion and upgrades;
+- handling NFT transfers while financing is outstanding;
+- access control for private pools;
+- production underwriting and risk controls;
+- protection against changing reward rates and changing active network weight;
+- secure contract accounting and audits.
+
+When financing settles, production routing would need to return the full future reward stream to the Friend.
+
+**None of this is live.**
+
+## Stack
+
+| Layer | Choice |
+| --- | --- |
+| UI | React 18 + TypeScript 5.7 |
+| Build | Vite 6 |
+| Chain | viem 2.21, Robinhood Chain JSON-RPC |
+| Unit tests | Vitest 2.1 |
+| E2E tests | Playwright 1.49 |
+| Hosting | GitHub Pages |
+
+**FriendSDK: No.** Rare Advance is a financial/economy web tool and uses a custom read-only wallet and Rare
+Friends protocol-data integration. This is valid under the Vibeathon rules for non-game tools.
+
+## Run locally
+
+```sh
+git clone https://github.com/buildinginweb3/rare-advance.git
+cd rare-advance
+git checkout 1505eff7e0907b943541343d60b45930f78eee6f
+npm ci
+npm run dev
+```
+
+Demo Mode runs with **no environment variables at all**.
+
+Optional variables (see `.env.example`):
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `VITE_OPENSEA_API_KEY` | No | Secondary traits / marketplace metadata only. Without it the app still works. |
+| `VITE_RPC_URL` | No | Extra public RPC. Falls back to the official endpoint. |
+| `VITE_RF_API_BASE` | No | First-party Rare Friends API base. Defaults to `https://rarefriends.com`. |
+
+The demo build ships a deliberately public, low-privilege, rotatable OpenSea key in `.env.example`. It only
+reads public NFT metadata, cannot move anything, and is never used for ownership or any economic figure.
+**It is not reproduced in this submission.**
+
+Useful scripts: `npm run dev`, `npm run build`, `npm run typecheck`, `npm test`, `npm run e2e`.
+
+## Checks
+
+All run against commit `1505eff7e0907b943541343d60b45930f78eee6f`.
+
+| Check | Result |
+| --- | --- |
+| Typecheck | PASS |
+| Unit tests | 263 / 263 PASS |
+| Wallet regression tests | 9 / 9 PASS |
+| E2E (offline, against the production build) | 51 / 51 PASS |
+| Production build | PASS |
+| Accessibility / contrast / reduced motion | PASS |
+| Desktop visual QA | PASS |
+| 360px | PASS |
+| 390px | PASS |
+| 430px | PASS |
+| Deployed-demo smoke (live URL) | 3 / 3 PASS |
+| Judge-flow walkthrough (live URL, 7 flows × 4 viewports) | 28 / 28 PASS |
+
+Validated source commit:
+[`1505eff7e0907b943541343d60b45930f78eee6f`](https://github.com/buildinginweb3/rare-advance/tree/1505eff7e0907b943541343d60b45930f78eee6f)
+
+## Known limitations
+
+- Financing is **simulated**. There is no live lending or advance contract.
+- Liquidity is **simulated**. There is no real reward assignment or routing mechanism.
+- There is no real WETH routing.
+- Growth actions are **modeled**, not executed.
+- NFT-transfer behaviour while financing is outstanding remains a production design requirement.
+- Reward rates vary; reward weight is allocation weight, **not** a guaranteed yield, return or ROI.
+- Modeled payback timing is not guaranteed.
+- User-created pools are stored in the browser (local storage) and are not shared with other users.
+- OpenSea and first-party indexed metadata can lag onchain state.
+- Static hosting limits use of first-party endpoints that do not send CORS headers; the deployed build falls
+  back to onchain reads and simulated data when they are unreachable.
+- The demo market is a scenario, not a forecast. It is not calibrated against real liquidity demand.
+
+## Wallet / funds safety
+
+**Rare Advance's Vibeathon build is read-only with respect to real assets.**
+
+It does **not**:
+
+- request RF approvals;
+- request NFT approvals;
+- move RF;
+- move WETH;
+- move NFTs;
+- deposit real liquidity;
+- claim rewards;
+- activate Friends;
+- upgrade Friends;
+- execute financing;
+- request a financial signature of any kind.
+
+Wallet connection is used for **identity and read-only discovery only**.
+
+## Credits
+
+- **Rare Friends** — the collection, artwork, `ActivationManager` reward accounting and protocol rules that
+  this project reads and is built around. Rare Friends is a separate project; Rare Advance does not replace it.
+- **OpenSea** — API v2, used secondarily for NFT traits and marketplace links.
+- **viem** — Ethereum/Robinhood Chain JSON-RPC client.
+- **React**, **TypeScript**, **Vite**, **Vitest**, **Playwright** — open-source tooling.
+
+All Rare Friends artwork shown in this project is read directly from the official collection contracts and is
+not redistributed, recoloured or redrawn.
