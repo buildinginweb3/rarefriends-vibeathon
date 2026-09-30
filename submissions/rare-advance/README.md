@@ -29,7 +29,7 @@ Demo Mode needs **no wallet**, **no Rare Friend** and **no RF**. Press **Try Dem
 
 ## SUBMITTED SOURCE COMMIT
 
-**[`1505eff7e0907b943541343d60b45930f78eee6f`](https://github.com/buildinginweb3/rare-advance/tree/1505eff7e0907b943541343d60b45930f78eee6f)**
+**[`684da73b9f72be7c2c6907976c5c033f8a098c52`](https://github.com/buildinginweb3/rare-advance/tree/684da73b9f72be7c2c6907976c5c033f8a098c52)**
 
 This is the exact commit behind the public demo linked above.
 
@@ -37,8 +37,8 @@ This is the exact commit behind the public demo linked above.
 
 ![Rare Advance](hero.png)
 
-<sub>The real deployed app. The portrait is the genuine onchain `tokenURI()` artwork of Rare Friends Genesis #500,
-read from the collection contract. Reward figures are labelled SIMULATED.</sub>
+<sub>The real deployed app. The portrait is the genuine onchain `tokenURI()` artwork, read from the
+collection contract. Reward figures are labelled SIMULATED.</sub>
 
 ---
 
@@ -140,10 +140,10 @@ Anyone in the simulated market can create a liquidity pool. The creator sets:
 
 - **public or private**;
 - **eligible financing type** (reward advances, growth financing, or both);
-- **LP premium**;
+- **LP premium**, which can be set as high as 100%;
 - **maximum financing size**;
-- **maximum share of an action that may be financed** (which also sets the minimum owner contribution);
-- **RF routing terms**;
+- **RF reward routing**, up to 100%;
+- **minimum borrower contribution** (derived, so the two can never contradict);
 - **optional WETH participation** for Growth;
 - **eligible growth actions and generations**;
 - **pool capital**.
@@ -154,6 +154,11 @@ Anyone in the simulated market can create a liquidity pool. The creator sets:
 liquidity providers and borrowers via an invite code or allowlist.
 
 Other contributors join on the pool's **existing** terms.
+
+There is deliberately **no "maximum financing" setting**. Capping how much a pool
+lends does not protect the pool, because every borrower repays the same premium
+on whatever they took: a borrower who wants more RF simply takes it from another
+pool. A pool either wants the business or it does not.
 
 ### Communal pool accounting
 
@@ -236,7 +241,9 @@ Paying off early only ever charges the premium earned so far.
 Demo Mode is the easiest path and needs no wallet.
 
 1. Open [the demo](https://buildinginweb3.github.io/rare-advance/) and press **Try Demo**.
-2. Use the preselected Rare Friend, or press **Change Friend** to pick another.
+2. Use the preselected Rare Friend — a real hardwired Generation 2 — or press **Change Friend**. The demo
+   wallet holds both a Genesis and a Generation, so you can compare a Friend that can grow with one that
+   cannot.
 3. Press **Get this stream early**.
 4. Choose how much streaming RF to advance (presets or a specific amount).
 5. Compare the available liquidity pools.
@@ -401,7 +408,7 @@ Friends protocol-data integration. This is valid under the Vibeathon rules for n
 ```sh
 git clone https://github.com/buildinginweb3/rare-advance.git
 cd rare-advance
-git checkout 1505eff7e0907b943541343d60b45930f78eee6f
+git checkout 684da73b9f72be7c2c6907976c5c033f8a098c52
 npm ci
 npm run dev
 ```
@@ -424,14 +431,14 @@ Useful scripts: `npm run dev`, `npm run build`, `npm run typecheck`, `npm test`,
 
 ## Checks
 
-All run against commit `1505eff7e0907b943541343d60b45930f78eee6f`.
+All run against commit `684da73b9f72be7c2c6907976c5c033f8a098c52`.
 
 | Check | Result |
 | --- | --- |
 | Typecheck | PASS |
-| Unit tests | 263 / 263 PASS |
+| Unit tests | 266 / 266 PASS |
 | Wallet regression tests | 9 / 9 PASS |
-| E2E (offline, against the production build) | 51 / 51 PASS |
+| E2E (offline, against the production build) | 57 / 57 PASS |
 | Production build | PASS |
 | Accessibility / contrast / reduced motion | PASS |
 | Desktop visual QA | PASS |
@@ -439,10 +446,10 @@ All run against commit `1505eff7e0907b943541343d60b45930f78eee6f`.
 | 390px | PASS |
 | 430px | PASS |
 | Deployed-demo smoke (live URL) | 3 / 3 PASS |
-| Judge-flow walkthrough (live URL, 7 flows × 4 viewports) | 28 / 28 PASS |
+| Judge-flow walkthrough (live URL, 11 flows × 4 viewports) | 44 / 44 PASS |
 
 Validated source commit:
-[`1505eff7e0907b943541343d60b45930f78eee6f`](https://github.com/buildinginweb3/rare-advance/tree/1505eff7e0907b943541343d60b45930f78eee6f)
+[`684da73b9f72be7c2c6907976c5c033f8a098c52`](https://github.com/buildinginweb3/rare-advance/tree/684da73b9f72be7c2c6907976c5c033f8a098c52)
 
 ## Known limitations
 
