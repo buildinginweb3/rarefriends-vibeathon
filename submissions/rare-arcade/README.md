@@ -93,12 +93,12 @@ creator margin is expected there.
 ## Source code
 
 <https://github.com/buildinginweb3/rare-arcade> · commit
-[`e3ebb17`](https://github.com/buildinginweb3/rare-arcade/tree/e3ebb175b395411639fd96266a73c601dd89663e)
+[`bf889d0`](https://github.com/buildinginweb3/rare-arcade/tree/bf889d042f9a64bb92614ffa4d1207a75838d3f5)
 
 ```sh
 git clone https://github.com/buildinginweb3/rare-arcade.git
 cd rare-arcade
-git checkout e3ebb175b395411639fd96266a73c601dd89663e
+git checkout bf889d042f9a64bb92614ffa4d1207a75838d3f5
 npm ci
 npm run dev
 ```
@@ -219,18 +219,23 @@ A persistent banner states the simulation on every page.
 
 ## Checks
 
-All run against commit `e3ebb17`:
+All run against commit `bf889d04`:
 
 | Check | Result |
 |---|---|
 | `npx tsc --noEmit` (typecheck) | **PASS** |
 | `npm test` (Vitest unit/economics/valuation) | **PASS** — 237 tests, 22 files |
 | `npm run build` (production build) | **PASS** |
-| `npx playwright test` (E2E) | **PASS** — 36 tests, chromium + mobile |
+| `npx playwright test` (E2E) | **PASS** — 42 tests, chromium + mobile (8 opt-in deployed-demo tests skip locally) |
 | `npm run test:fx` (visual QA) | **PASS** — 31 deterministic screenshot checks |
 | `npm run check:live` (read-only OpenSea + RPC) | **PASS** — 18/18 |
 | Public demo smoke test, chromium + mobile | **PASS** — 8/8 |
 | Desktop / 360px / 390px / 430px | **PASS** — no horizontal overflow |
+
+The deployed demo at <https://buildinginweb3.github.io/rare-arcade/> is built
+from this commit by a GitHub Pages workflow that re-runs typecheck, unit tests
+and the production build on every push, so the published build is gated on the
+same checks.
 
 The live check confirms, against production endpoints: OpenSea supports the
 `robinhood` chain; Generations #8283 and Genesis #773 resolve with artwork;
