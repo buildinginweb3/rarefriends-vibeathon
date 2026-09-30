@@ -217,6 +217,37 @@ Rare Arcade requests **no** NFT approvals, **no** RF approvals, **no** transfers
 and **no** transaction signatures. Read-only ownership checks are not escrow.
 A persistent banner states the simulation on every page.
 
+## Future support / integration
+
+The Vibeathon build intentionally keeps the economy simulated. Moving Rare
+Arcade from this MVP into a live economy would require additional production
+integration:
+
+- **Live $RAREFRIENDS settlement** — real pull spending, the 5% burn, and creator
+  receipts would require approved on-chain $RAREFRIENDS integration rather than
+  browser-state simulation. The 5% burn and 95% creator split are currently
+  computed in app state only; no contract is deployed and no tokens move.
+
+- **NFT escrow and prize settlement** — creator-funded NFTs would require secure
+  production escrow and transfer infrastructure before real NFT prizes could be
+  deposited, held, or awarded. Read-only `ownerOf` checks are not escrow, and no
+  NFT is transferred today.
+
+- **Verifiable randomness** — live prize settlement would require
+  production-grade verifiable randomness, such as VRF or another approved
+  mechanism. Draws currently run in the browser from Web Crypto randomness
+  (`crypto.getRandomValues`) with a `Math.random` fallback, which players cannot
+  independently verify or audit on-chain.
+
+- **Persistent backend state** — machines, balances, prize inventories, and the
+  ledger currently persist in `localStorage` (`rare-arcade:v1`) on the current
+  browser only. A live version would require durable production persistence and
+  synchronization across sessions and devices.
+
+- **Production publication** — enabling a live economy or official Rare Friends
+  deployment would require the appropriate Rare Friends production review and
+  approval before any real assets or funds are involved.
+
 ## Checks
 
 All run against commit `bf889d04`:
