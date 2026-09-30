@@ -29,7 +29,7 @@ Demo Mode needs **no wallet**, **no Rare Friend** and **no RF**. Press **Try Dem
 
 ## SUBMITTED SOURCE COMMIT
 
-**[`684da73b9f72be7c2c6907976c5c033f8a098c52`](https://github.com/buildinginweb3/rare-advance/tree/684da73b9f72be7c2c6907976c5c033f8a098c52)**
+**[`ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc`](https://github.com/buildinginweb3/rare-advance/tree/ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc)**
 
 This is the exact commit behind the public demo linked above.
 
@@ -203,6 +203,11 @@ Grow **models** financing for valid Rare Friends protocol actions. Depending on 
 The pool supplies simulated RF. The holder may supply an owner contribution. The growth action changes reward
 weight according to Rare Friends protocol rules. A configurable portion of modeled future RF rewards can repay
 the financing.
+
+A borrower can choose to put in anything from 0% to 100% of the cost. At 0% a
+lender funds the whole action; at 100% there is nothing left to finance and the
+app says so rather than showing an empty list. Every seeded pool can fund a
+promotion as well as an upgrade.
 
 **All of this financing is SIMULATED. No real protocol action executes.**
 
@@ -408,7 +413,7 @@ Friends protocol-data integration. This is valid under the Vibeathon rules for n
 ```sh
 git clone https://github.com/buildinginweb3/rare-advance.git
 cd rare-advance
-git checkout 684da73b9f72be7c2c6907976c5c033f8a098c52
+git checkout ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc
 npm ci
 npm run dev
 ```
@@ -431,14 +436,14 @@ Useful scripts: `npm run dev`, `npm run build`, `npm run typecheck`, `npm test`,
 
 ## Checks
 
-All run against commit `684da73b9f72be7c2c6907976c5c033f8a098c52`.
+All run against commit `ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc`.
 
 | Check | Result |
 | --- | --- |
 | Typecheck | PASS |
 | Unit tests | 266 / 266 PASS |
 | Wallet regression tests | 9 / 9 PASS |
-| E2E (offline, against the production build) | 57 / 57 PASS |
+| E2E (offline, against the production build) | 60 / 60 PASS |
 | Production build | PASS |
 | Accessibility / contrast / reduced motion | PASS |
 | Desktop visual QA | PASS |
@@ -446,10 +451,10 @@ All run against commit `684da73b9f72be7c2c6907976c5c033f8a098c52`.
 | 390px | PASS |
 | 430px | PASS |
 | Deployed-demo smoke (live URL) | 3 / 3 PASS |
-| Judge-flow walkthrough (live URL, 11 flows × 4 viewports) | 44 / 44 PASS |
+| Judge-flow walkthrough (live URL, 14 flows × 4 viewports) | 56 / 56 PASS |
 
 Validated source commit:
-[`684da73b9f72be7c2c6907976c5c033f8a098c52`](https://github.com/buildinginweb3/rare-advance/tree/684da73b9f72be7c2c6907976c5c033f8a098c52)
+[`ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc`](https://github.com/buildinginweb3/rare-advance/tree/ce9ebb5ddd29e7e332b88ae8ea24901eae1ac9dc)
 
 ## Known limitations
 
