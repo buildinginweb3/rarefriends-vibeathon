@@ -29,7 +29,7 @@ Demo Mode needs **no wallet**, **no Rare Friend** and **no RF**. Press **Try Dem
 
 ## SUBMITTED SOURCE COMMIT
 
-**[`31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a`](https://github.com/buildinginweb3/rare-advance/tree/31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a)**
+**[`1f43f75fb30b023b0f86f32965dd8bbe5fc158e6`](https://github.com/buildinginweb3/rare-advance/tree/1f43f75fb30b023b0f86f32965dd8bbe5fc158e6)**
 
 This is the exact commit behind the public demo linked above.
 
@@ -297,21 +297,42 @@ direct onchain `ownerOf()` read.
 
 **What the deployed build can actually do.** Measured on 2026-09-30 against the public deployment:
 
+- The first-party `/api/protocol/owned-nfts` responds `200` with correct data but sends no
+  `access-control-allow-origin` header, so a browser on static hosting cannot read it. The same-origin
+  proxy paths that solve this exist only in the Vite dev/preview server, which is why the bug could be
+  invisible locally and reproducible on Pages.
+- OpenSea's `/api/v2/accounts/{address}/nfts` returns `NOT_FOUND` for these tokens even with a valid
+  API key, so it is not a usable discovery route and no key would have helped.
+- The public RPC rejects `eth_getLogs` outright (HTTP 403) at every block range, so event-based discovery
+  is unavailable.
+- `Generations` exposes no owner index: `totalSupply()`, `balanceOf()` and `tokenOfOwnerByIndex()` all
+  revert, and its ids are sparse (4,000 exists but 1 does not; 343,888 exists but 345,000 does not), so
+  an id-range binary search would be unsound.
+
+Discovery therefore resolves by a **direct onchain sweep of every token id of both collections**, bundled
+through Multicall3 `aggregate3`, which is deployed on Robinhood Chain. That turns 345,000 individual
+`ownerOf` reads into ~87 requests. Ownership is still confirmed per token by the `ownerOf` value returned
+in the bundle, so nothing is trusted from an index.
+
+The sweep is exhaustive, and discovery reports `exhaustive: false` if any bundle cannot be read even after
+one retry, so a flaky RPC can never be rendered as "this wallet owns nothing". Verified against wallet
+`0x927A1799125EAE57B6BDc573Ee5e0354cD343Db1`: the deployed build loads Generations #84370 and #193474,
+matching the first-party index exactly.
+
+The sweep takes roughly 45 seconds against the public RPC, which the UI states plainly with a
+**VERIFYING YOUR FRIENDS** state rather than showing an empty result for the duration. Pointing
+`VITE_RPC_URL` at a faster endpoint is the straightforward way to shorten it.
+
+**OpenSea API v2** is used only as a **secondary** source for NFT traits and canonical marketplace URLs, and as
+a fallback image. OpenSea ownership is never trusted for economics: ownership is always re-verified with a
+direct onchain `ownerOf()` read.
+
+**What the deployed build can actually do.** Measured on 2026-09-30 against the public deployment:
+
 - The first-party `/api/protocol/owned-nfts` responds `200` but sends no `access-control-allow-origin` header,
   so a browser on static hosting cannot read it, and the same-origin proxy paths return `404` on GitHub Pages.
 - OpenSea's `/api/v2/accounts/{address}/nfts` does not serve these tokens, so it is not a usable discovery
   route for them either.
-
-Discovery therefore falls through to a **direct onchain sweep**, which needs no index, no API key and no CORS.
-`Genesis` is fully enumerable and is checked completely. `Generations` has no owner index (`totalSupply()`,
-`balanceOf()` and `tokenOfOwnerByIndex()` all revert) and its highest live token id is in the hundreds of
-thousands, so it is swept newest-first within a strict budget and only when `Genesis` returns nothing.
-
-Because that `Generations` check is bounded, discovery reports whether it was exhaustive. When it was not, the
-empty state reads **FRIENDS NOT VERIFIED** and explains why, rather than claiming the wallet holds nothing.
-This is why a connected wallet may briefly show the demo prompt despite holding Friends: rare, non-recently
-minted `Generations` tokens cannot be enumerated from a browser. Closing this properly requires either CORS on
-the first-party endpoint or a server-side indexer, neither of which is available to a static build.
 
 ## $RAREFRIENDS economy
 
@@ -471,7 +492,7 @@ Friends protocol-data integration. This is valid under the Vibeathon rules for n
 ```sh
 git clone https://github.com/buildinginweb3/rare-advance.git
 cd rare-advance
-git checkout 31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a
+git checkout 1f43f75fb30b023b0f86f32965dd8bbe5fc158e6
 npm ci
 npm run dev
 ```
@@ -494,15 +515,15 @@ Useful scripts: `npm run dev`, `npm run build`, `npm run typecheck`, `npm test`,
 
 ## Checks
 
-All run against commit `31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a`.
+All run against commit `1f43f75fb30b023b0f86f32965dd8bbe5fc158e6`.
 
 | Check | Result |
 | --- | --- |
 | Typecheck | PASS |
-| Unit tests | 272 / 272 PASS |
+| Unit tests | 273 / 273 PASS |
 | Wallet regression tests | 11 / 11 PASS |
 | E2E (offline, against the production build) | 62 / 62 PASS |
-| NFT discovery regression tests | 6 / 6 PASS |
+| NFT discovery regression tests | 7 / 7 PASS |
 | Production build | PASS |
 | Accessibility / contrast / reduced motion | PASS |
 | Desktop visual QA | PASS |
@@ -513,7 +534,7 @@ All run against commit `31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a`.
 | Judge-flow walkthrough (live URL, 14 flows × 4 viewports) | 56 / 56 PASS |
 
 Validated source commit:
-[`31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a`](https://github.com/buildinginweb3/rare-advance/tree/31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a)
+[`1f43f75fb30b023b0f86f32965dd8bbe5fc158e6`](https://github.com/buildinginweb3/rare-advance/tree/1f43f75fb30b023b0f86f32965dd8bbe5fc158e6)
 
 ## Known limitations
 
@@ -527,8 +548,10 @@ Validated source commit:
 - User-created pools are stored in the browser (local storage) and are not shared with other users.
 - OpenSea and first-party indexed metadata can lag onchain state.
 - Static hosting limits use of first-party endpoints that do not send CORS headers; the deployed build falls
-  back to onchain reads and simulated data when they are unreachable. Because the `Generations` contract has no
-  owner index, `Generations` holdings reported by the deployed build are best-effort, never exhaustive.
+  back to onchain reads when they are unreachable. Discovery is exhaustive, but a bundle that cannot be read
+  is reported as unverified rather than as an empty result.
+- Onchain discovery bundles many `ownerOf` reads per request, which is a heavier public-RPC load than a
+  single read; a dedicated RPC endpoint is recommended for real deployments.
 - The demo market is a scenario, not a forecast. It is not calibrated against real liquidity demand.
 
 ## Wallet / funds safety
