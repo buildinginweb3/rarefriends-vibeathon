@@ -29,7 +29,7 @@ Demo Mode needs **no wallet**, **no Rare Friend** and **no RF**. Press **Try Dem
 
 ## SUBMITTED SOURCE COMMIT
 
-**[`3ba529d55c74bb137a0c2913cf45e8e642f49000`](https://github.com/buildinginweb3/rare-advance/tree/3ba529d55c74bb137a0c2913cf45e8e642f49000)**
+**[`31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a`](https://github.com/buildinginweb3/rare-advance/tree/31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a)**
 
 This is the exact commit behind the public demo linked above.
 
@@ -471,7 +471,7 @@ Friends protocol-data integration. This is valid under the Vibeathon rules for n
 ```sh
 git clone https://github.com/buildinginweb3/rare-advance.git
 cd rare-advance
-git checkout 3ba529d55c74bb137a0c2913cf45e8e642f49000
+git checkout 31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a
 npm ci
 npm run dev
 ```
@@ -494,15 +494,15 @@ Useful scripts: `npm run dev`, `npm run build`, `npm run typecheck`, `npm test`,
 
 ## Checks
 
-All run against commit `3ba529d55c74bb137a0c2913cf45e8e642f49000`.
+All run against commit `31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a`.
 
 | Check | Result |
 | --- | --- |
 | Typecheck | PASS |
-| Unit tests | 271 / 271 PASS |
+| Unit tests | 272 / 272 PASS |
 | Wallet regression tests | 11 / 11 PASS |
 | E2E (offline, against the production build) | 62 / 62 PASS |
-| NFT discovery regression tests | 5 / 5 PASS |
+| NFT discovery regression tests | 6 / 6 PASS |
 | Production build | PASS |
 | Accessibility / contrast / reduced motion | PASS |
 | Desktop visual QA | PASS |
@@ -513,7 +513,7 @@ All run against commit `3ba529d55c74bb137a0c2913cf45e8e642f49000`.
 | Judge-flow walkthrough (live URL, 14 flows × 4 viewports) | 56 / 56 PASS |
 
 Validated source commit:
-[`3ba529d55c74bb137a0c2913cf45e8e642f49000`](https://github.com/buildinginweb3/rare-advance/tree/3ba529d55c74bb137a0c2913cf45e8e642f49000)
+[`31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a`](https://github.com/buildinginweb3/rare-advance/tree/31ad5d7ac5085b7aafdf0c11affceee7e31d5c8a)
 
 ## Known limitations
 
