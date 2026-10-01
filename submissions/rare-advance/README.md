@@ -29,7 +29,7 @@ Demo Mode needs **no wallet**, **no Rare Friend** and **no RF**. Press **Try Dem
 
 ## SUBMITTED SOURCE COMMIT
 
-**[`ab36ca10455d0860afca247a28c7e1b7d4a2b9b9`](https://github.com/buildinginweb3/rare-advance/tree/ab36ca10455d0860afca247a28c7e1b7d4a2b9b9)**
+**[`3ba529d55c74bb137a0c2913cf45e8e642f49000`](https://github.com/buildinginweb3/rare-advance/tree/3ba529d55c74bb137a0c2913cf45e8e642f49000)**
 
 This is the exact commit behind the public demo linked above.
 
@@ -295,6 +295,24 @@ JSON/JSON-RPC pass-throughs.
 a fallback image. OpenSea ownership is never trusted for economics: ownership is always re-verified with a
 direct onchain `ownerOf()` read.
 
+**What the deployed build can actually do.** Measured on 2026-09-30 against the public deployment:
+
+- The first-party `/api/protocol/owned-nfts` responds `200` but sends no `access-control-allow-origin` header,
+  so a browser on static hosting cannot read it, and the same-origin proxy paths return `404` on GitHub Pages.
+- OpenSea's `/api/v2/accounts/{address}/nfts` does not serve these tokens, so it is not a usable discovery
+  route for them either.
+
+Discovery therefore falls through to a **direct onchain sweep**, which needs no index, no API key and no CORS.
+`Genesis` is fully enumerable and is checked completely. `Generations` has no owner index (`totalSupply()`,
+`balanceOf()` and `tokenOfOwnerByIndex()` all revert) and its highest live token id is in the hundreds of
+thousands, so it is swept newest-first within a strict budget and only when `Genesis` returns nothing.
+
+Because that `Generations` check is bounded, discovery reports whether it was exhaustive. When it was not, the
+empty state reads **FRIENDS NOT VERIFIED** and explains why, rather than claiming the wallet holds nothing.
+This is why a connected wallet may briefly show the demo prompt despite holding Friends: rare, non-recently
+minted `Generations` tokens cannot be enumerated from a browser. Closing this properly requires either CORS on
+the first-party endpoint or a server-side indexer, neither of which is available to a static build.
+
 ## $RAREFRIENDS economy
 
 RF is what Rare Friends actions consume and what rewards are paid in. Rare Advance does two things with it:
@@ -453,7 +471,7 @@ Friends protocol-data integration. This is valid under the Vibeathon rules for n
 ```sh
 git clone https://github.com/buildinginweb3/rare-advance.git
 cd rare-advance
-git checkout ab36ca10455d0860afca247a28c7e1b7d4a2b9b9
+git checkout 3ba529d55c74bb137a0c2913cf45e8e642f49000
 npm ci
 npm run dev
 ```
@@ -476,14 +494,15 @@ Useful scripts: `npm run dev`, `npm run build`, `npm run typecheck`, `npm test`,
 
 ## Checks
 
-All run against commit `ab36ca10455d0860afca247a28c7e1b7d4a2b9b9`.
+All run against commit `3ba529d55c74bb137a0c2913cf45e8e642f49000`.
 
 | Check | Result |
 | --- | --- |
 | Typecheck | PASS |
-| Unit tests | 266 / 266 PASS |
+| Unit tests | 271 / 271 PASS |
 | Wallet regression tests | 11 / 11 PASS |
 | E2E (offline, against the production build) | 62 / 62 PASS |
+| NFT discovery regression tests | 5 / 5 PASS |
 | Production build | PASS |
 | Accessibility / contrast / reduced motion | PASS |
 | Desktop visual QA | PASS |
@@ -494,7 +513,7 @@ All run against commit `ab36ca10455d0860afca247a28c7e1b7d4a2b9b9`.
 | Judge-flow walkthrough (live URL, 14 flows × 4 viewports) | 56 / 56 PASS |
 
 Validated source commit:
-[`ab36ca10455d0860afca247a28c7e1b7d4a2b9b9`](https://github.com/buildinginweb3/rare-advance/tree/ab36ca10455d0860afca247a28c7e1b7d4a2b9b9)
+[`3ba529d55c74bb137a0c2913cf45e8e642f49000`](https://github.com/buildinginweb3/rare-advance/tree/3ba529d55c74bb137a0c2913cf45e8e642f49000)
 
 ## Known limitations
 
@@ -508,7 +527,8 @@ Validated source commit:
 - User-created pools are stored in the browser (local storage) and are not shared with other users.
 - OpenSea and first-party indexed metadata can lag onchain state.
 - Static hosting limits use of first-party endpoints that do not send CORS headers; the deployed build falls
-  back to onchain reads and simulated data when they are unreachable.
+  back to onchain reads and simulated data when they are unreachable. Because the `Generations` contract has no
+  owner index, `Generations` holdings reported by the deployed build are best-effort, never exhaustive.
 - The demo market is a scenario, not a forecast. It is not calibrated against real liquidity demand.
 
 ## Wallet / funds safety
