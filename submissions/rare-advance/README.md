@@ -29,7 +29,7 @@ Demo Mode needs **no wallet**, **no Rare Friend** and **no RF**. Press **Try Dem
 
 ## SUBMITTED SOURCE COMMIT
 
-**[`1f43f75fb30b023b0f86f32965dd8bbe5fc158e6`](https://github.com/buildinginweb3/rare-advance/tree/1f43f75fb30b023b0f86f32965dd8bbe5fc158e6)**
+**[`2216572cc13377f894d4fb098351fd8e9d74877e`](https://github.com/buildinginweb3/rare-advance/tree/2216572cc13377f894d4fb098351fd8e9d74877e)**
 
 This is the exact commit behind the public demo linked above.
 
@@ -301,8 +301,9 @@ direct onchain `ownerOf()` read.
   `access-control-allow-origin` header, so a browser on static hosting cannot read it. The same-origin
   proxy paths that solve this exist only in the Vite dev/preview server, which is why the bug could be
   invisible locally and reproducible on Pages.
-- OpenSea's `/api/v2/accounts/{address}/nfts` returns `NOT_FOUND` for these tokens even with a valid
-  API key, so it is not a usable discovery route and no key would have helped.
+- OpenSea serves these tokens, but only on the chain-scoped, singular-account path
+  `/api/v2/chain/robinhood/account/{address}/nfts`. The un-scoped `/api/v2/accounts/{address}/nfts`
+  path does not exist and returns 404, which previously made every wallet miss the fast route.
 - The public RPC rejects `eth_getLogs` outright (HTTP 403) at every block range, so event-based discovery
   is unavailable.
 - `Generations` exposes no owner index: `totalSupply()`, `balanceOf()` and `tokenOfOwnerByIndex()` all
@@ -314,14 +315,17 @@ through Multicall3 `aggregate3`, which is deployed on Robinhood Chain. That turn
 `ownerOf` reads into ~87 requests. Ownership is still confirmed per token by the `ownerOf` value returned
 in the bundle, so nothing is trusted from an index.
 
-The sweep is exhaustive, and discovery reports `exhaustive: false` if any bundle cannot be read even after
-one retry, so a flaky RPC can never be rendered as "this wallet owns nothing". Verified against wallet
-`0x927A1799125EAE57B6BDc573Ee5e0354cD343Db1`: the deployed build loads Generations #84370 and #193474,
-matching the first-party index exactly.
+Ownership from an index is still always re-confirmed with a direct onchain `ownerOf` read, so an index can
+never decide what a wallet owns; it only narrows the candidate set fast.
 
-The sweep takes roughly 45 seconds against the public RPC, which the UI states plainly with a
-**VERIFYING YOUR FRIENDS** state rather than showing an empty result for the duration. Pointing
-`VITE_RPC_URL` at a faster endpoint is the straightforward way to shorten it.
+Discovery is ordered: first-party index, then OpenSea, then the onchain sweep. With OpenSea answering,
+the deployed build verifies wallet `0x927A1799125EAE57B6BDc573Ee5e0354cD343Db1` and loads Generations
+#84370 and #193474 — matching the first-party index exactly — in about **2 seconds** on the live site.
+
+The sweep remains the last resort for when no index answers, and it is exhaustive: it reports
+`exhaustive: false` if any bundle cannot be read even after one retry, so a flaky RPC can never be rendered
+as "this wallet owns nothing". It takes roughly 45 seconds against the public RPC, during which the UI
+states **VERIFYING YOUR FRIENDS** rather than showing an empty result.
 
 **OpenSea API v2** is used only as a **secondary** source for NFT traits and canonical marketplace URLs, and as
 a fallback image. OpenSea ownership is never trusted for economics: ownership is always re-verified with a
@@ -492,7 +496,7 @@ Friends protocol-data integration. This is valid under the Vibeathon rules for n
 ```sh
 git clone https://github.com/buildinginweb3/rare-advance.git
 cd rare-advance
-git checkout 1f43f75fb30b023b0f86f32965dd8bbe5fc158e6
+git checkout 2216572cc13377f894d4fb098351fd8e9d74877e
 npm ci
 npm run dev
 ```
@@ -515,15 +519,15 @@ Useful scripts: `npm run dev`, `npm run build`, `npm run typecheck`, `npm test`,
 
 ## Checks
 
-All run against commit `1f43f75fb30b023b0f86f32965dd8bbe5fc158e6`.
+All run against commit `2216572cc13377f894d4fb098351fd8e9d74877e`.
 
 | Check | Result |
 | --- | --- |
 | Typecheck | PASS |
-| Unit tests | 273 / 273 PASS |
+| Unit tests | 274 / 274 PASS |
 | Wallet regression tests | 11 / 11 PASS |
 | E2E (offline, against the production build) | 62 / 62 PASS |
-| NFT discovery regression tests | 7 / 7 PASS |
+| NFT discovery regression tests | 8 / 8 PASS |
 | Production build | PASS |
 | Accessibility / contrast / reduced motion | PASS |
 | Desktop visual QA | PASS |
@@ -534,7 +538,7 @@ All run against commit `1f43f75fb30b023b0f86f32965dd8bbe5fc158e6`.
 | Judge-flow walkthrough (live URL, 14 flows × 4 viewports) | 56 / 56 PASS |
 
 Validated source commit:
-[`1f43f75fb30b023b0f86f32965dd8bbe5fc158e6`](https://github.com/buildinginweb3/rare-advance/tree/1f43f75fb30b023b0f86f32965dd8bbe5fc158e6)
+[`2216572cc13377f894d4fb098351fd8e9d74877e`](https://github.com/buildinginweb3/rare-advance/tree/2216572cc13377f894d4fb098351fd8e9d74877e)
 
 ## Known limitations
 
